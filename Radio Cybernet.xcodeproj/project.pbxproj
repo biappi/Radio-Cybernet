@@ -1,0 +1,441 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3F1B7322231D839800D83CA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B7321231D839800D83CA0 /* AppDelegate.swift */; };
+		3F1B7324231D839800D83CA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B7323231D839800D83CA0 /* ViewController.swift */; };
+		3F1B7327231D839800D83CA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B7325231D839800D83CA0 /* Main.storyboard */; };
+		3F1B7329231D839900D83CA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B7328231D839900D83CA0 /* Assets.xcassets */; };
+		3F1B732C231D839900D83CA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B732A231D839900D83CA0 /* LaunchScreen.storyboard */; };
+		3FF2722F231D843E007F53D3 /* libLAME.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF27227231D8427007F53D3 /* libLAME.a */; };
+		3FF27230231D843E007F53D3 /* liblibshout.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF2722D231D842C007F53D3 /* liblibshout.a */; };
+		3FF2724F231DA685007F53D3 /* stub.c in Sources */ = {isa = PBXBuildFile; fileRef = 3FF2724E231DA685007F53D3 /* stub.c */; };
+		3FF27251231DAB79007F53D3 /* test.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3FF27250231DAB79007F53D3 /* test.mp3 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3FF27226231D8427007F53D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FF27222231D8427007F53D3 /* LAME.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F9DBE38231D76970067A652;
+			remoteInfo = LAME;
+		};
+		3FF2722C231D842C007F53D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FF27228231D842C007F53D3 /* libshout.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F441CBE231D7AAE00EE6859;
+			remoteInfo = libshout;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3F1B731E231D839800D83CA0 /* Radio Cybernet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Radio Cybernet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F1B7321231D839800D83CA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3F1B7323231D839800D83CA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3F1B7326231D839800D83CA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3F1B7328231D839900D83CA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3F1B732B231D839900D83CA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		3F1B732D231D839900D83CA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3FF27222231D8427007F53D3 /* LAME.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LAME.xcodeproj; path = Dependencies/LAME.xcodeproj; sourceTree = "<group>"; };
+		3FF27228231D842C007F53D3 /* libshout.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libshout.xcodeproj; path = Dependencies/libshout.xcodeproj; sourceTree = "<group>"; };
+		3FF27231231D97C9007F53D3 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		3FF2724D231DA685007F53D3 /* stub.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stub.h; sourceTree = "<group>"; };
+		3FF2724E231DA685007F53D3 /* stub.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = stub.c; sourceTree = "<group>"; };
+		3FF27250231DAB79007F53D3 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = test.mp3; path = ../../../Downloads/test.mp3; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3F1B731B231D839800D83CA0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FF2722F231D843E007F53D3 /* libLAME.a in Frameworks */,
+				3FF27230231D843E007F53D3 /* liblibshout.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3F1B7315231D839800D83CA0 = {
+			isa = PBXGroup;
+			children = (
+				3F1B7320231D839800D83CA0 /* Radio Cybernet */,
+				3FF27221231D841C007F53D3 /* Dependencies */,
+				3F1B731F231D839800D83CA0 /* Products */,
+				3FF2722E231D843E007F53D3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		3F1B731F231D839800D83CA0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3F1B731E231D839800D83CA0 /* Radio Cybernet.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3F1B7320231D839800D83CA0 /* Radio Cybernet */ = {
+			isa = PBXGroup;
+			children = (
+				3FF27250231DAB79007F53D3 /* test.mp3 */,
+				3F1B7321231D839800D83CA0 /* AppDelegate.swift */,
+				3FF2724D231DA685007F53D3 /* stub.h */,
+				3FF2724E231DA685007F53D3 /* stub.c */,
+				3F1B7323231D839800D83CA0 /* ViewController.swift */,
+				3F1B7325231D839800D83CA0 /* Main.storyboard */,
+				3F1B7328231D839900D83CA0 /* Assets.xcassets */,
+				3F1B732A231D839900D83CA0 /* LaunchScreen.storyboard */,
+				3F1B732D231D839900D83CA0 /* Info.plist */,
+				3FF27231231D97C9007F53D3 /* Bridging-Header.h */,
+			);
+			path = "Radio Cybernet";
+			sourceTree = "<group>";
+		};
+		3FF27221231D841C007F53D3 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				3FF27228231D842C007F53D3 /* libshout.xcodeproj */,
+				3FF27222231D8427007F53D3 /* LAME.xcodeproj */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		3FF27223231D8427007F53D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3FF27227231D8427007F53D3 /* libLAME.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3FF27229231D842C007F53D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3FF2722D231D842C007F53D3 /* liblibshout.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3FF2722E231D843E007F53D3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3F1B731D231D839800D83CA0 /* Radio Cybernet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3F1B7330231D839900D83CA0 /* Build configuration list for PBXNativeTarget "Radio Cybernet" */;
+			buildPhases = (
+				3F1B731A231D839800D83CA0 /* Sources */,
+				3F1B731B231D839800D83CA0 /* Frameworks */,
+				3F1B731C231D839800D83CA0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Radio Cybernet";
+			productName = "Radio Cybernet";
+			productReference = 3F1B731E231D839800D83CA0 /* Radio Cybernet.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3F1B7316231D839800D83CA0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1030;
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = "Antonio Malara";
+				TargetAttributes = {
+					3F1B731D231D839800D83CA0 = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = 3F1B7319231D839800D83CA0 /* Build configuration list for PBXProject "Radio Cybernet" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3F1B7315231D839800D83CA0;
+			productRefGroup = 3F1B731F231D839800D83CA0 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3FF27223231D8427007F53D3 /* Products */;
+					ProjectRef = 3FF27222231D8427007F53D3 /* LAME.xcodeproj */;
+				},
+				{
+					ProductGroup = 3FF27229231D842C007F53D3 /* Products */;
+					ProjectRef = 3FF27228231D842C007F53D3 /* libshout.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				3F1B731D231D839800D83CA0 /* Radio Cybernet */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3FF27227231D8427007F53D3 /* libLAME.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLAME.a;
+			remoteRef = 3FF27226231D8427007F53D3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3FF2722D231D842C007F53D3 /* liblibshout.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblibshout.a;
+			remoteRef = 3FF2722C231D842C007F53D3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3F1B731C231D839800D83CA0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FF27251231DAB79007F53D3 /* test.mp3 in Resources */,
+				3F1B732C231D839900D83CA0 /* LaunchScreen.storyboard in Resources */,
+				3F1B7329231D839900D83CA0 /* Assets.xcassets in Resources */,
+				3F1B7327231D839800D83CA0 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3F1B731A231D839800D83CA0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F1B7324231D839800D83CA0 /* ViewController.swift in Sources */,
+				3FF2724F231DA685007F53D3 /* stub.c in Sources */,
+				3F1B7322231D839800D83CA0 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		3F1B7325231D839800D83CA0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3F1B7326231D839800D83CA0 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		3F1B732A231D839900D83CA0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3F1B732B231D839900D83CA0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3F1B732E231D839900D83CA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3F1B732F231D839900D83CA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3F1B7331231D839900D83CA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EPCUPW9SH8;
+				INFOPLIST_FILE = "Radio Cybernet/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "name.malara.antonio.Radio-Cybernet";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Radio Cybernet/Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = Dependencies/libshout;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3F1B7332231D839900D83CA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = EPCUPW9SH8;
+				INFOPLIST_FILE = "Radio Cybernet/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "name.malara.antonio.Radio-Cybernet";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Radio Cybernet/Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = Dependencies/libshout;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3F1B7319231D839800D83CA0 /* Build configuration list for PBXProject "Radio Cybernet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F1B732E231D839900D83CA0 /* Debug */,
+				3F1B732F231D839900D83CA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3F1B7330231D839900D83CA0 /* Build configuration list for PBXNativeTarget "Radio Cybernet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F1B7331231D839900D83CA0 /* Debug */,
+				3F1B7332231D839900D83CA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3F1B7316231D839800D83CA0 /* Project object */;
+}
