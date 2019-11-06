@@ -58,6 +58,20 @@ class Engine {
     var floatData1 = [Float](repeating: 0, count: audioBufferSizeSamples)
     var mp3Buffer  = [UInt8](repeating: 0, count: mp3BufferSizeSample)
 
+    func recordedFileURL() -> URL {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .long
+        
+        let dateString = formatter.string(from: Date())
+        
+        return FileManager
+            .default
+            .urls(for: .documentDirectory, in: .allDomainsMask)
+            .first!
+            .appendingPathComponent("diocane - \(dateString).mp3")
+    }
+    
     func engine_test() {
         let  session = AVAudioSession.sharedInstance()
         try! session.setCategory(AVAudioSession.Category.record)
@@ -76,12 +90,9 @@ class Engine {
             print(engine.inputNode.name(forOutputBus: i) ?? "noname")
             print(engine.inputNode.outputFormat(forBus: i))
         }
-                
-        let url = FileManager
-            .default
-            .urls(for: .documentDirectory, in: .allDomainsMask)
-            .first!
-            .appendingPathComponent("DIOCANE")
+        
+        
+        let url = recordedFileURL()
         
         FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
         file = try? FileHandle(forWritingTo: url)
