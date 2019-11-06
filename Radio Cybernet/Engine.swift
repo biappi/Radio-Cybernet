@@ -8,6 +8,7 @@
 
 import Foundation
 import AVFoundation
+import Combine
 
 func rms(data: [Float]) -> Float {
     return data
@@ -43,11 +44,13 @@ func sampleFromAudioBuffer(_ pointer: UnsafeMutableRawPointer, bufferStride: Int
         .pointee
 }
 
-class Engine {
+class Engine : ObservableObject {
     
     static let audioBufferSizeSec     = 1
     static let audioBufferSizeSamples = 44100 * audioBufferSizeSec
     static let mp3BufferSizeSample    = Int(1.25 * Double(audioBufferSizeSamples) + 7200)
+    
+    static let shared = Engine()
     
     let engine = AVAudioEngine()
     let lame   = LAME()
@@ -58,6 +61,8 @@ class Engine {
     var floatData1 = [Float](repeating: 0, count: audioBufferSizeSamples)
     var mp3Buffer  = [UInt8](repeating: 0, count: mp3BufferSizeSample)
 
+    @Published private(set) var meterLevel = CGFloat(0)
+    
     func recordedFileURL() -> URL {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -76,29 +81,11 @@ class Engine {
         let  session = AVAudioSession.sharedInstance()
         try! session.setCategory(AVAudioSession.Category.record)
         try! session.setActive(true)
-        
-        print(engine.inputNode)
-        
-        for i in 0 ..< engine.inputNode.numberOfInputs {
-            print(i)
-            print(engine.inputNode.name(forInputBus: i) ?? "noname")
-            print(engine.inputNode.inputFormat(forBus: i))
-        }
-
-        for i in 0 ..< engine.inputNode.numberOfOutputs {
-            print(i)
-            print(engine.inputNode.name(forOutputBus: i) ?? "noname")
-            print(engine.inputNode.outputFormat(forBus: i))
-        }
-        
-        
+                
         let url = recordedFileURL()
         
         FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
         file = try? FileHandle(forWritingTo: url)
-        
-        print(url.path)
-        
         engine.inputNode.installTap(onBus: 0, bufferSize: 0, format: nil, block: tap)
 
         shout_open(shout.shout)
@@ -139,7 +126,7 @@ class Engine {
         let scaledValue = meterValue(data: floatData1)
         
         DispatchQueue.main.async {
-            porcoddio.send(CGFloat(scaledValue))
+            self.meterLevel = CGFloat(scaledValue)
         }
     }
 }

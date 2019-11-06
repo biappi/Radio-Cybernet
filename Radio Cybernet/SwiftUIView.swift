@@ -9,9 +9,9 @@
 import SwiftUI
 import Combine
 
-var porcoddio = PassthroughSubject<CGFloat, Never>()
-
 struct SwiftUIView: View {
+    
+    @EnvironmentObject var engine: Engine
     
     @State private var level      = CGFloat(0)
 
@@ -81,9 +81,8 @@ struct SwiftUIView: View {
                 }
             }
             
-            Meter(level: $level)
+            Meter(level: engine.meterLevel)
                 .padding([.horizontal, .vertical])
-                .onReceive(porcoddio) { self.level = $0 }
         }
     }
     
@@ -96,7 +95,7 @@ struct SwiftUIView_Previews: PreviewProvider {
 }
 
 struct Meter: View {
-    @Binding var level : CGFloat
+    var level : CGFloat
     
     var body: some View {
         GeometryReader { metrics in
