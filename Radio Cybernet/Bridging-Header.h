@@ -10,5 +10,6 @@
 #define Bridging_Header_h
 
 #include <shout/shout.h>
+#include <lame.h>
 
 #endif /* Bridging_Header_h */

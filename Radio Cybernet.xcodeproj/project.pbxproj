@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		3F1B7322231D839800D83CA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B7321231D839800D83CA0 /* AppDelegate.swift */; };
 		3F1B7324231D839800D83CA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B7323231D839800D83CA0 /* ViewController.swift */; };
-		3F1B7327231D839800D83CA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B7325231D839800D83CA0 /* Main.storyboard */; };
 		3F1B7329231D839900D83CA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B7328231D839900D83CA0 /* Assets.xcassets */; };
 		3F1B732C231D839900D83CA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B732A231D839900D83CA0 /* LaunchScreen.storyboard */; };
+		3FA92AB52354002D0038AFFC /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA92AB42354002D0038AFFC /* SwiftUIView.swift */; };
+		3FA92ACF23540F2B0038AFFC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA92ACE23540F2B0038AFFC /* SceneDelegate.swift */; };
 		3FF2722F231D843E007F53D3 /* libLAME.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF27227231D8427007F53D3 /* libLAME.a */; };
 		3FF27230231D843E007F53D3 /* liblibshout.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF2722D231D842C007F53D3 /* liblibshout.a */; };
 		3FF2724F231DA685007F53D3 /* stub.c in Sources */ = {isa = PBXBuildFile; fileRef = 3FF2724E231DA685007F53D3 /* stub.c */; };
@@ -39,10 +40,11 @@
 		3F1B731E231D839800D83CA0 /* Radio Cybernet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Radio Cybernet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F1B7321231D839800D83CA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F1B7323231D839800D83CA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		3F1B7326231D839800D83CA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3F1B7328231D839900D83CA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F1B732B231D839900D83CA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F1B732D231D839900D83CA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3FA92AB42354002D0038AFFC /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		3FA92ACE23540F2B0038AFFC /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		3FF27222231D8427007F53D3 /* LAME.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LAME.xcodeproj; path = Dependencies/LAME.xcodeproj; sourceTree = "<group>"; };
 		3FF27228231D842C007F53D3 /* libshout.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libshout.xcodeproj; path = Dependencies/libshout.xcodeproj; sourceTree = "<group>"; };
 		3FF27231231D97C9007F53D3 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -89,8 +91,9 @@
 				3F1B7321231D839800D83CA0 /* AppDelegate.swift */,
 				3FF2724D231DA685007F53D3 /* stub.h */,
 				3FF2724E231DA685007F53D3 /* stub.c */,
+				3FA92ACE23540F2B0038AFFC /* SceneDelegate.swift */,
 				3F1B7323231D839800D83CA0 /* ViewController.swift */,
-				3F1B7325231D839800D83CA0 /* Main.storyboard */,
+				3FA92AB42354002D0038AFFC /* SwiftUIView.swift */,
 				3F1B7328231D839900D83CA0 /* Assets.xcassets */,
 				3F1B732A231D839900D83CA0 /* LaunchScreen.storyboard */,
 				3F1B732D231D839900D83CA0 /* Info.plist */,
@@ -219,7 +222,6 @@
 				3FF27251231DAB79007F53D3 /* test.mp3 in Resources */,
 				3F1B732C231D839900D83CA0 /* LaunchScreen.storyboard in Resources */,
 				3F1B7329231D839900D83CA0 /* Assets.xcassets in Resources */,
-				3F1B7327231D839800D83CA0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,8 +232,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FA92ACF23540F2B0038AFFC /* SceneDelegate.swift in Sources */,
 				3F1B7324231D839800D83CA0 /* ViewController.swift in Sources */,
 				3FF2724F231DA685007F53D3 /* stub.c in Sources */,
+				3FA92AB52354002D0038AFFC /* SwiftUIView.swift in Sources */,
 				3F1B7322231D839800D83CA0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,14 +243,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		3F1B7325231D839800D83CA0 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3F1B7326231D839800D83CA0 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		3F1B732A231D839900D83CA0 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -309,7 +305,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -364,7 +360,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -389,7 +385,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Radio Cybernet/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_HEADER_SEARCH_PATHS = Dependencies/libshout;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					Dependencies/libshout,
+					"Dependencies/Vendor/lame-3.100/include",
+				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -409,7 +408,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Radio Cybernet/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_HEADER_SEARCH_PATHS = Dependencies/libshout;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					Dependencies/libshout,
+					"Dependencies/Vendor/lame-3.100/include",
+				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
