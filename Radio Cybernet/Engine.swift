@@ -76,6 +76,14 @@ class Engine : ObservableObject {
 
     @Published private(set) var meterLevel = CGFloat(0)
     
+    enum State {
+        case offline
+        case connecting
+        case connected
+    }
+    
+    @Published private(set) var state = State.offline
+    
     func recordedFileURL() -> URL {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -106,11 +114,19 @@ class Engine : ObservableObject {
     }
 
     var connectRequest: RadioConfiguration?
+    var connectedYet = false
     
     func goLive(
         radio: RadioConfiguration,
         event: EventConfiguration
     ) {
+        guard state == .offline else {
+            return
+        }
+        
+        state = .connecting
+        
+        connectedYet = false
         connectRequest = radio
         
         if event.record {
@@ -150,6 +166,14 @@ class Engine : ObservableObject {
         }
         
         if shout_get_connected(shout.shout) == SHOUTERR_CONNECTED {
+            if !connectedYet {
+                connectedYet = true
+                
+                DispatchQueue.main.async {
+                    self.state = .connected
+                }
+            }
+            
             let res = mp3buf.withUnsafeBytes { bytes -> Int32 in
                 let x = bytes.bindMemory(to: UInt8.self)
                 return shout_send(shout.shout, x.baseAddress, x.count)
@@ -159,7 +183,6 @@ class Engine : ObservableObject {
                 print(shout_get_error(shout.shout) ?? "nil")
             }
         }
-        
         
         let scaledValue = meterValue(data: floatData1)
         

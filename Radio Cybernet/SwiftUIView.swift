@@ -24,16 +24,28 @@ extension RadioConfiguration {
     }
 }
 
+extension Engine.State {
+    var string : String {
+        switch self {
+        case .offline:    return "Offline"
+        case .connecting: return "Connecting"
+        case .connected:  return "Connected"
+        }
+    }
+}
+
 struct SwiftUIView: View {
     
     @EnvironmentObject var engine: Engine
-    
+
     @State private var level      = CGFloat(0)
     
     @State private var radioConf  = RadioConfiguration()
     @State private var eventConf  = EventConfiguration()
     
+    
     var body: some View {
+
         VStack {
             HStack {
                 Form {
@@ -80,6 +92,7 @@ struct SwiftUIView: View {
                         }
 
                     }
+            
                     
                     Section(header: Text("Event")) {
                         TextField("Event name", text: $eventConf.name)
@@ -90,12 +103,22 @@ struct SwiftUIView: View {
                         Button(action: goLive) {
                             Text("Go Live")
                         }
+                    
                     }
+                    .disabled(engine.state != .offline)
                 }
             }
             
-            Meter(level: engine.meterLevel)
+            VStack {
+                HStack {
+                    Text(engine.state.string)
+                }
+                .padding(.bottom)
+                
+                Meter(level: engine.meterLevel)
+            }
                 .padding([.horizontal, .vertical])
+                
         }
     }
     
