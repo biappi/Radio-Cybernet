@@ -134,8 +134,10 @@ class Engine : ObservableObject {
 
     // one way communication to audio queue
     
-    var file:           FileHandle?
-    var connectRequest: (RadioConfiguration, EventConfiguration)?
+    var semaphore         = DispatchSemaphore(value: 1)
+    
+    var file:               FileHandle?
+    var connectRequest:     (RadioConfiguration, EventConfiguration)?
     
     var disconnectRequest = false
     var sendPackets       = false
@@ -150,6 +152,9 @@ class Engine : ObservableObject {
             return
         }
         
+        semaphore.wait()
+        defer { semaphore.signal() }
+        
         state = .connecting        
         connectRequest = (radio, event)
                 
@@ -162,6 +167,9 @@ class Engine : ObservableObject {
             return
         }
         
+        semaphore.wait()
+        defer { semaphore.signal() }
+
         state = .disconnecting
         disconnectRequest = true
     }
@@ -187,6 +195,9 @@ class Engine : ObservableObject {
         
         let mp3buf = mp3Buffer.prefix(upTo: Int(encoded))
         
+        semaphore.wait()
+        defer { semaphore.signal() }
+
         if let (radio, event) = connectRequest, !disconnectRequest {
             connectRequest = nil
             
@@ -213,8 +224,9 @@ class Engine : ObservableObject {
             }
         }
         else if disconnectRequest {
-            shout.disconnect()
+            disconnectRequest = false
             sendPackets = false
+            shout.disconnect()
             DispatchQueue.main.async {
                 self.state = .offline(status: nil)
             }
@@ -223,10 +235,11 @@ class Engine : ObservableObject {
         if sendPackets {
             file?.write(Data(mp3buf))
             
-            let error = shout.send(mp3buf)
-            sendPackets = false
-            DispatchQueue.main.async {
-                self.state = .offline(status: error)
+            if let error = shout.send(mp3buf) {
+                sendPackets = false
+                DispatchQueue.main.async {
+                    self.state = .offline(status: error)
+                }
             }
         }
         
