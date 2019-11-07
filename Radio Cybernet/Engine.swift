@@ -101,18 +101,20 @@ class Engine : ObservableObject {
     
     @Published private(set) var state = State.offline(status: nil)
     
-    func recordedFileURL() -> URL {
+    func recordedFileURL(name: String) -> URL {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .long
         
-        let dateString = formatter.string(from: Date())
+        let namePart = name == "" ? "\(name) - " : ""
+        let datePart = formatter.string(from: Date())
+        let filename = "\(namePart)\(datePart).mp3"
         
         return FileManager
             .default
             .urls(for: .documentDirectory, in: .allDomainsMask)
             .first!
-            .appendingPathComponent("diocane - \(dateString).mp3")
+            .appendingPathComponent(filename)
     }
     
     func engine_test() {
@@ -133,7 +135,7 @@ class Engine : ObservableObject {
     // one way communication to audio queue
     
     var file:           FileHandle?
-    var connectRequest: RadioConfiguration?
+    var connectRequest: (RadioConfiguration, EventConfiguration)?
     
     var disconnectRequest = false
     var sendPackets       = false
@@ -149,18 +151,8 @@ class Engine : ObservableObject {
         }
         
         state = .connecting        
-        connectRequest = radio
-        
-        if event.record {
-            let url = recordedFileURL()
-            
-            FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
-            file = try? FileHandle(forWritingTo: url)
-        }
-        else {
-            file = nil
-        }
-        
+        connectRequest = (radio, event)
+                
         disconnectRequest = false
         sendPackets = false
     }
@@ -194,11 +186,20 @@ class Engine : ObservableObject {
         )
         
         let mp3buf = mp3Buffer.prefix(upTo: Int(encoded))
-        file?.write(Data(mp3buf))
         
-        if let radio = connectRequest, !disconnectRequest {
+        if let (radio, event) = connectRequest, !disconnectRequest {
             connectRequest = nil
             
+            if event.record {
+                let url = recordedFileURL(name: event.name)
+                
+                FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
+                file = try? FileHandle(forWritingTo: url)
+            }
+            else {
+                file = nil
+            }
+
             let error = shout.connectTo(radio)
             sendPackets = error == nil
             
@@ -220,6 +221,8 @@ class Engine : ObservableObject {
         }
         
         if sendPackets {
+            file?.write(Data(mp3buf))
+            
             let error = shout.send(mp3buf)
             sendPackets = false
             DispatchQueue.main.async {
