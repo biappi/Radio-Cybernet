@@ -22,9 +22,11 @@ extension RadioConfiguration {
             }
         }
     }
+    
 }
 
 extension Engine.State {
+    
     var string: String {
         switch self {
         case .offline(let status):
@@ -34,6 +36,14 @@ extension Engine.State {
         case .disconnecting:  return "Disconnecting"
         }
     }
+    
+    var didConnect: Bool {
+        switch self {
+        case .connected: return true
+        default:         return false
+        }
+    }
+    
 }
 
 struct SwiftUIView: View {
@@ -44,6 +54,37 @@ struct SwiftUIView: View {
     
     @State private var radioConf  = RadioConfiguration()
     @State private var eventConf  = EventConfiguration()
+    
+    func loadConfiguration() {
+        let d = UserDefaults.standard
+        
+        d.register(defaults: [
+            "port": 8000,
+            "record": false
+        ])
+        
+        radioConf.name     = d.string (forKey: "radioName") ?? ""
+        radioConf.hostname = d.string (forKey: "hostname")  ?? ""
+        radioConf.port     = d.integer(forKey: "port")
+        radioConf.mount    = d.string (forKey: "mount")     ?? ""
+        radioConf.password = d.string (forKey: "password")  ?? ""
+        
+        eventConf.name     = d.string (forKey: "eventName") ?? ""
+        eventConf.record   = d.bool   (forKey: "record")
+    }
+    
+    func saveConfiguraion() {
+        let d = UserDefaults.standard
+
+        d.set(radioConf.name,     forKey: "radioName")
+        d.set(radioConf.hostname, forKey: "hostname")
+        d.set(radioConf.port,     forKey: "port")
+        d.set(radioConf.mount,    forKey: "mount")
+        d.set(radioConf.password, forKey: "password")
+        
+        d.set(eventConf.name,     forKey: "eventName")
+        d.set(eventConf.record,   forKey: "record")
+    }
     
     var body: some View {
 
@@ -66,12 +107,15 @@ struct SwiftUIView: View {
                             
                             Spacer()
                             TextField("radio.example.com", text: $radioConf.hostname)
+                                .autocapitalization(.none)
+                                .keyboardType(.URL)
                             
                             Text(":")
                                 .padding(.bottom, 2)
                             
                             TextField("8080", text: $radioConf.portString
                             )
+                                .keyboardType(.numberPad)
                                 .frame(maxWidth: 50)
                             
                         }
@@ -82,6 +126,7 @@ struct SwiftUIView: View {
                             
                             Spacer()
                             TextField("/radio.mp3", text: $radioConf.mount)
+                                .autocapitalization(.none)
                         }
 
                         HStack {
@@ -125,6 +170,12 @@ struct SwiftUIView: View {
             }
                 .padding([.horizontal, .vertical])
                 
+        }
+        .onAppear(perform: loadConfiguration)
+        .onReceive(engine.$state) {
+            if $0.didConnect {
+                self.saveConfiguraion()
+            }
         }
     }
     
