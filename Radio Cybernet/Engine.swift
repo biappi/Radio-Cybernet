@@ -44,6 +44,19 @@ func sampleFromAudioBuffer(_ pointer: UnsafeMutableRawPointer, bufferStride: Int
         .pointee
 }
 
+struct RadioConfiguration {
+    var name:     String = ""
+    var hostname: String = ""
+    var port:     Int    = 80
+    var mount:    String = ""
+    var password: String = ""
+}
+
+struct EventConfiguration {
+    var name:   String = ""
+    var record: Bool = true
+}
+
 class Engine : ObservableObject {
     
     static let audioBufferSizeSec     = 1
@@ -81,18 +94,35 @@ class Engine : ObservableObject {
         let  session = AVAudioSession.sharedInstance()
         try! session.setCategory(AVAudioSession.Category.record)
         try! session.setActive(true)
-                
-        let url = recordedFileURL()
         
-        FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
-        file = try? FileHandle(forWritingTo: url)
-        engine.inputNode.installTap(onBus: 0, bufferSize: 0, format: nil, block: tap)
+        engine.inputNode.installTap(
+            onBus: 0,
+            bufferSize: 0,
+            format: nil,
+            block: tap
+        )
 
-        shout_open(shout.shout)
-            
         try! engine.start()
     }
 
+    var connectRequest: RadioConfiguration?
+    
+    func goLive(
+        radio: RadioConfiguration,
+        event: EventConfiguration
+    ) {
+        connectRequest = radio
+        
+        if event.record {
+            let url = recordedFileURL()
+            
+            FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil)
+            file = try? FileHandle(forWritingTo: url)
+        }
+        else {
+            file = nil
+        }
+    }
     
     func tap(buffer: AVAudioPCMBuffer, time: AVAudioTime) {
         let length        = Int(buffer.frameLength)
@@ -114,14 +144,22 @@ class Engine : ObservableObject {
         let mp3buf = mp3Buffer.prefix(upTo: Int(encoded))
         file?.write(Data(mp3buf))
         
-        let res = mp3buf.withUnsafeBytes { bytes -> Int32 in
-            let x = bytes.bindMemory(to: UInt8.self)
-            return shout_send(shout.shout, x.baseAddress, x.count)
+        if let radio = connectRequest {
+            shout.connectTo(radio)
+            connectRequest = nil
         }
         
-        if res != SHOUTERR_SUCCESS {
-            print(shout_get_error(shout.shout) ?? "nil")
+        if shout_get_connected(shout.shout) == SHOUTERR_CONNECTED {
+            let res = mp3buf.withUnsafeBytes { bytes -> Int32 in
+                let x = bytes.bindMemory(to: UInt8.self)
+                return shout_send(shout.shout, x.baseAddress, x.count)
+            }
+            
+            if res != SHOUTERR_SUCCESS {
+                print(shout_get_error(shout.shout) ?? "nil")
+            }
         }
+        
         
         let scaledValue = meterValue(data: floatData1)
         

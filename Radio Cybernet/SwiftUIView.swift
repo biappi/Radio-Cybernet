@@ -9,21 +9,30 @@
 import SwiftUI
 import Combine
 
+extension RadioConfiguration {
+    
+    var portString : String {
+        get {
+            String(port)
+        }
+        
+        set {
+            NumberFormatter().number(from: newValue).map {
+                self.port = Int(truncating: $0)
+            }
+        }
+    }
+}
+
 struct SwiftUIView: View {
     
     @EnvironmentObject var engine: Engine
     
     @State private var level      = CGFloat(0)
-
-    @State private var name       = ""
-    @State private var hostname   = ""
-    @State private var port       = ""
-    @State private var mountpoint = ""
-    @State private var password   = ""
     
-    @State private var eventName  = ""
-    @State private var saveFile   = true
-
+    @State private var radioConf  = RadioConfiguration()
+    @State private var eventConf  = EventConfiguration()
+    
     var body: some View {
         VStack {
             HStack {
@@ -33,8 +42,9 @@ struct SwiftUIView: View {
                         HStack {
                             Text("Name")
                                 .padding(.bottom, 2)
+                            
                             Spacer()
-                            TextField("Example Radio", text: $mountpoint)
+                            TextField("Example Radio", text: $radioConf.name)
                         }
 
                         HStack {
@@ -42,10 +52,13 @@ struct SwiftUIView: View {
                                 .padding(.bottom, 2)
                             
                             Spacer()
-                            TextField("radio.example.com", text: $hostname)
+                            TextField("radio.example.com", text: $radioConf.hostname)
+                            
                             Text(":")
                                 .padding(.bottom, 2)
-                            TextField("8080", text: $port)
+                            
+                            TextField("8080", text: $radioConf.portString
+                            )
                                 .frame(maxWidth: 50)
                             
                         }
@@ -53,9 +66,9 @@ struct SwiftUIView: View {
                         HStack {
                             Text("Mountpoint")
                                 .padding(.bottom, 2)
+                            
                             Spacer()
-                            TextField("/radio.mp3", text: $mountpoint)
-
+                            TextField("/radio.mp3", text: $radioConf.mount)
                         }
 
                         HStack {
@@ -63,20 +76,20 @@ struct SwiftUIView: View {
                                 .padding(.bottom, 2)
 
                             Spacer()
-                            SecureField("password", text: $hostname)
+                            SecureField("password", text: $radioConf.password)
                         }
 
                     }
                     
                     Section(header: Text("Event")) {
-                        TextField("Event name", text: $eventName)
-                        Toggle("Save recording", isOn: $saveFile)
-
+                        TextField("Event name", text: $eventConf.name)
+                        Toggle("Save recording", isOn: $eventConf.record)
                     }
                     
                     Section {
-                        Button(action: { },
-                               label: { Text("Go Live") } )
+                        Button(action: goLive) {
+                            Text("Go Live")
+                        }
                     }
                 }
             }
@@ -84,6 +97,10 @@ struct SwiftUIView: View {
             Meter(level: engine.meterLevel)
                 .padding([.horizontal, .vertical])
         }
+    }
+    
+    func goLive() {
+        engine.goLive(radio: radioConf, event: eventConf)
     }
     
 }
