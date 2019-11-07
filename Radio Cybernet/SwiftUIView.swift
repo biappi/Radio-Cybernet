@@ -25,11 +25,13 @@ extension RadioConfiguration {
 }
 
 extension Engine.State {
-    var string : String {
+    var string: String {
         switch self {
-        case .offline:    return "Offline"
-        case .connecting: return "Connecting"
-        case .connected:  return "Connected"
+        case .offline(let status):
+            return "Offline" + (status.map { " - \($0)" } ?? "")
+        case .connecting:     return "Connecting"
+        case .connected:      return "Connected"
+        case .disconnecting:  return "Disconnecting"
         }
     }
 }
@@ -42,7 +44,6 @@ struct SwiftUIView: View {
     
     @State private var radioConf  = RadioConfiguration()
     @State private var eventConf  = EventConfiguration()
-    
     
     var body: some View {
 
@@ -92,7 +93,6 @@ struct SwiftUIView: View {
                         }
 
                     }
-            
                     
                     Section(header: Text("Event")) {
                         TextField("Event name", text: $eventConf.name)
@@ -100,12 +100,18 @@ struct SwiftUIView: View {
                     }
                     
                     Section {
-                        Button(action: goLive) {
-                            Text("Go Live")
+                        if !engine.state.canDisconnect {
+                            Button(action: goLive) {
+                                Text("Go Live")
+                            }
+                            .disabled(!engine.state.canGoLive)
                         }
-                    
+                        else {
+                            Button(action: engine.disconnect) {
+                                Text("Disconnect")
+                            }
+                        }
                     }
-                    .disabled(engine.state != .offline)
                 }
             }
             

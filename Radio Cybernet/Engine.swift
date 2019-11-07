@@ -69,20 +69,37 @@ class Engine : ObservableObject {
     let lame   = LAME()
     let shout  = Shout()
     
-    var file  : FileHandle?
-
     var floatData1 = [Float](repeating: 0, count: audioBufferSizeSamples)
     var mp3Buffer  = [UInt8](repeating: 0, count: mp3BufferSizeSample)
 
     @Published private(set) var meterLevel = CGFloat(0)
     
     enum State {
-        case offline
+        case offline(status: String?)
         case connecting
         case connected
+        case disconnecting
+        
+        var canGoLive: Bool {
+            switch self {
+            case .offline(_):    return true
+            case .connecting:    return false
+            case .connected:     return false
+            case .disconnecting: return false
+            }
+        }
+        
+        var canDisconnect: Bool {
+            switch self {
+                case .offline(_):    return false
+                case .connecting:    return false
+                case .connected:     return true
+                case .disconnecting: return false
+            }
+        }
     }
     
-    @Published private(set) var state = State.offline
+    @Published private(set) var state = State.offline(status: nil)
     
     func recordedFileURL() -> URL {
         let formatter = DateFormatter()
@@ -113,20 +130,25 @@ class Engine : ObservableObject {
         try! engine.start()
     }
 
+    // one way communication to audio queue
+    
+    var file:           FileHandle?
     var connectRequest: RadioConfiguration?
-    var connectedYet = false
+    
+    var disconnectRequest = false
+    var sendPackets       = false
+    
+    // -
     
     func goLive(
         radio: RadioConfiguration,
         event: EventConfiguration
     ) {
-        guard state == .offline else {
+        guard state.canGoLive else {
             return
         }
         
-        state = .connecting
-        
-        connectedYet = false
+        state = .connecting        
         connectRequest = radio
         
         if event.record {
@@ -138,7 +160,21 @@ class Engine : ObservableObject {
         else {
             file = nil
         }
+        
+        disconnectRequest = false
+        sendPackets = false
     }
+    
+    func disconnect() {
+        guard state.canDisconnect else {
+            return
+        }
+        
+        state = .disconnecting
+        disconnectRequest = true
+    }
+        
+    // - //
     
     func tap(buffer: AVAudioPCMBuffer, time: AVAudioTime) {
         let length        = Int(buffer.frameLength)
@@ -160,27 +196,34 @@ class Engine : ObservableObject {
         let mp3buf = mp3Buffer.prefix(upTo: Int(encoded))
         file?.write(Data(mp3buf))
         
-        if let radio = connectRequest {
-            shout.connectTo(radio)
+        if let radio = connectRequest, !disconnectRequest {
             connectRequest = nil
-        }
-        
-        if shout_get_connected(shout.shout) == SHOUTERR_CONNECTED {
-            if !connectedYet {
-                connectedYet = true
-                
-                DispatchQueue.main.async {
+            
+            let error = shout.connectTo(radio)
+            sendPackets = error == nil
+            
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.state = .offline(status: error)
+                }
+                else {
                     self.state = .connected
                 }
             }
-            
-            let res = mp3buf.withUnsafeBytes { bytes -> Int32 in
-                let x = bytes.bindMemory(to: UInt8.self)
-                return shout_send(shout.shout, x.baseAddress, x.count)
+        }
+        else if disconnectRequest {
+            shout.disconnect()
+            sendPackets = false
+            DispatchQueue.main.async {
+                self.state = .offline(status: nil)
             }
-            
-            if res != SHOUTERR_SUCCESS {
-                print(shout_get_error(shout.shout) ?? "nil")
+        }
+        
+        if sendPackets {
+            let error = shout.send(mp3buf)
+            sendPackets = false
+            DispatchQueue.main.async {
+                self.state = .offline(status: error)
             }
         }
         
