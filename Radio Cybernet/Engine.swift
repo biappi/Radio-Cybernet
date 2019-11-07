@@ -183,18 +183,7 @@ class Engine : ObservableObject {
         for sample in 0 ..< length {
             floatData1[sample] = sampleFromAudioBuffer(floatPointer1, bufferStride: buffer.stride, sampleIndex: sample)
         }
-        
-        let encoded = lame_encode_buffer_ieee_float(
-            lame.lame,
-            floatData1,
-            floatData1,
-            Int32(length),
-            &mp3Buffer,
-            Int32(Engine.mp3BufferSizeSample)
-        )
-        
-        let mp3buf = mp3Buffer.prefix(upTo: Int(encoded))
-        
+                
         semaphore.wait()
         defer { semaphore.signal() }
 
@@ -233,6 +222,17 @@ class Engine : ObservableObject {
         }
         
         if sendPackets {
+            let encoded = lame_encode_buffer_ieee_float(
+                lame.lame,
+                floatData1,
+                floatData1,
+                Int32(length),
+                &mp3Buffer,
+                Int32(Engine.mp3BufferSizeSample)
+            )
+            
+            let mp3buf = mp3Buffer.prefix(upTo: Int(encoded))
+
             file?.write(Data(mp3buf))
             
             if let error = shout.send(mp3buf) {
