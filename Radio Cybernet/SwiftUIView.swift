@@ -55,6 +55,14 @@ struct SwiftUIView: View {
     @State private var radioConf  = RadioConfiguration()
     @State private var eventConf  = EventConfiguration()
     
+    enum MeterMaxWidthPreference: Preference {}
+    let meterMaxWidth = GeometryPreferenceReader(
+        key: AppendValue<MeterMaxWidthPreference>.self,
+        value: { [$0.size.width] }
+    )
+    
+    @State var meterMaxWidthValue: CGFloat? = nil
+    
     func loadConfiguration() {
         let d = UserDefaults.standard
         
@@ -88,7 +96,7 @@ struct SwiftUIView: View {
     
     var body: some View {
 
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 Form {
                     Section(header: Text("Radio Settings")) {
@@ -160,23 +168,44 @@ struct SwiftUIView: View {
                 }
             }
             
-            VStack {
+            VStack(alignment: .leading) {
                 HStack {
+                    Text("Network")
+                        .multilineTextAlignment(.leading)
+                        .read(meterMaxWidth)
+                        .frame(width: meterMaxWidthValue, alignment: .topLeading)
+
                     Text(engine.state.string)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+
                 }
-                .padding(.bottom)
                 
-                Meter(level: engine.meterLevel)
+                HStack {
+                    Text("Input")
+                        .multilineTextAlignment(.leading)
+                        .read(meterMaxWidth)
+                        .frame(width: meterMaxWidthValue, alignment: .topLeading)
+                        
+
+                    Meter(level: engine.meterLevel)
+                        .frame(maxWidth: .infinity)
+                }
             }
                 .padding([.horizontal, .vertical])
-                
+                .background(Color.white)
+                .clipped()
+                .shadow(color: .gray, radius: 1, x: 0, y: -3)
+                                
         }
+
         .onAppear(perform: loadConfiguration)
         .onReceive(engine.$state) {
             if $0.didConnect {
                 self.saveConfiguraion()
             }
         }
+        .assignMaxPreference(for: meterMaxWidth.key, to: $meterMaxWidthValue)
     }
     
     func goLive() {

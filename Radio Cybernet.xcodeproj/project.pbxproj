@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F158C1524548B7700D0C93B /* SameWidthHack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F158C1424548B7700D0C93B /* SameWidthHack.swift */; };
 		3F1B7322231D839800D83CA0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B7321231D839800D83CA0 /* AppDelegate.swift */; };
 		3F1B7324231D839800D83CA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B7323231D839800D83CA0 /* ViewController.swift */; };
 		3F1B7329231D839900D83CA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B7328231D839900D83CA0 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F158C1424548B7700D0C93B /* SameWidthHack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameWidthHack.swift; sourceTree = "<group>"; };
 		3F1B731E231D839800D83CA0 /* Radio Cybernet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Radio Cybernet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F1B7321231D839800D83CA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F1B7323231D839800D83CA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				3F216B4D23726109003756D0 /* LAME.swift */,
 				3F216B4F2372612A003756D0 /* Shout.swift */,
 				3F216B5123726170003756D0 /* Engine.swift */,
+				3F158C1424548B7700D0C93B /* SameWidthHack.swift */,
 			);
 			path = "Radio Cybernet";
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				3F216B502372612A003756D0 /* Shout.swift in Sources */,
 				3F1B7324231D839800D83CA0 /* ViewController.swift in Sources */,
 				3F216B4E23726109003756D0 /* LAME.swift in Sources */,
+				3F158C1524548B7700D0C93B /* SameWidthHack.swift in Sources */,
 				3FF2724F231DA685007F53D3 /* stub.c in Sources */,
 				3F216B5223726170003756D0 /* Engine.swift in Sources */,
 				3FA92AB52354002D0038AFFC /* SwiftUIView.swift in Sources */,
