@@ -48,7 +48,7 @@ extension EngineState {
 
 struct SwiftUIView: View {
     
-    @EnvironmentObject var engine: RealEngine
+    @EnvironmentObject var engine: EngineInterface
 
     @State private var level      = CGFloat(0)
     
@@ -186,9 +186,14 @@ struct SwiftUIView: View {
 }
 
 struct SwiftUIView_Previews: PreviewProvider {
+    
+    static let interface = EngineInterface()
+    
     static var previews: some View {
         SwiftUIView()
+            .environmentObject(interface)
     }
+    
 }
 
 struct Meter: View {

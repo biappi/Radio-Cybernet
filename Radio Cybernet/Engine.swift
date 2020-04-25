@@ -82,7 +82,25 @@ enum EngineState {
     }
 }
 
-class RealEngine : ObservableObject {
+class EngineInterface : ObservableObject {
+    @Published var meterLevel = CGFloat(0)
+    @Published var state = EngineState.offline(status: nil)
+
+    var engine: RealEngine? = nil
+    
+    func disconnect() {
+        engine?.disconnect()
+    }
+    
+    func goLive(
+        radio: RadioConfiguration,
+        event: EventConfiguration
+    ) {
+        engine?.goLive(radio: radio, event: event)
+    }
+}
+
+class RealEngine {
     
     static let audioBufferSizeSec     = 1
     static let audioBufferSizeSamples = 44100 * audioBufferSizeSec
@@ -95,8 +113,12 @@ class RealEngine : ObservableObject {
     var floatData1 = [Float](repeating: 0, count: audioBufferSizeSamples)
     var mp3Buffer  = [UInt8](repeating: 0, count: mp3BufferSizeSample)
 
-    @Published private(set) var meterLevel = CGFloat(0)
-    @Published private(set) var state = EngineState.offline(status: nil)
+    let interface: EngineInterface
+    
+    init(interface: EngineInterface) {
+        self.interface = interface
+        interface.engine = self
+    }
     
     func recordedFileURL(name: String) -> URL {
         let formatter = DateFormatter()
@@ -145,14 +167,14 @@ class RealEngine : ObservableObject {
         radio: RadioConfiguration,
         event: EventConfiguration
     ) {
-        guard state.canGoLive else {
+        guard interface.state.canGoLive else {
             return
         }
         
         semaphore.wait()
         defer { semaphore.signal() }
         
-        state = .connecting        
+        interface.state = .connecting
         connectRequest = (radio, event)
                 
         disconnectRequest = false
@@ -160,14 +182,14 @@ class RealEngine : ObservableObject {
     }
     
     func disconnect() {
-        guard state.canDisconnect else {
+        guard interface.state.canDisconnect else {
             return
         }
         
         semaphore.wait()
         defer { semaphore.signal() }
 
-        state = .disconnecting
+        interface.state = .disconnecting
         disconnectRequest = true
     }
         
@@ -202,10 +224,10 @@ class RealEngine : ObservableObject {
             
             DispatchQueue.main.async {
                 if let error = error {
-                    self.state = .offline(status: error)
+                    self.interface.state = .offline(status: error)
                 }
                 else {
-                    self.state = .connected
+                    self.interface.state = .connected
                 }
             }
         }
@@ -214,7 +236,7 @@ class RealEngine : ObservableObject {
             sendPackets = false
             shout.disconnect()
             DispatchQueue.main.async {
-                self.state = .offline(status: nil)
+                self.interface.state = .offline(status: nil)
             }
         }
         
@@ -235,7 +257,7 @@ class RealEngine : ObservableObject {
             if let error = shout.send(mp3buf) {
                 sendPackets = false
                 DispatchQueue.main.async {
-                    self.state = .offline(status: error)
+                    self.interface.state = .offline(status: error)
                 }
             }
         }
@@ -243,7 +265,7 @@ class RealEngine : ObservableObject {
         let scaledValue = meterValue(data: floatData1)
         
         DispatchQueue.main.async {
-            self.meterLevel = CGFloat(scaledValue)
+            self.interface.meterLevel = CGFloat(scaledValue)
         }
     }
 }
