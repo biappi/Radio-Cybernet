@@ -185,17 +185,6 @@ struct SwiftUIView: View {
     
 }
 
-struct SwiftUIView_Previews: PreviewProvider {
-    
-    static let interface = EngineInterface()
-    
-    static var previews: some View {
-        SwiftUIView()
-            .environmentObject(interface)
-    }
-    
-}
-
 struct Meter: View {
     var level : CGFloat
     
@@ -210,6 +199,30 @@ struct Meter: View {
                     .foregroundColor(.yellow)
             }
         }
-        .frame(height: CGFloat(40))
+        .frame(height: CGFloat(20))
     }
+}
+
+// Preview Providers
+
+struct SwiftUIView_Previews: PreviewProvider {
+    
+    static let interface = EngineInterface()
+    
+    static var previews: some View {
+        
+        Group {
+            SwiftUIView()
+                .environmentObject(interface)
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
+            
+            SwiftUIView()
+                .environmentObject(interface)
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+                .previewDisplayName("iPhone 11 Pro Max")
+            
+        }
+    }
+    
 }
