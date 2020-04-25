@@ -170,7 +170,7 @@ class RealEngine {
     func goLive(
         radio: RadioConfiguration,
         event: EventConfiguration
-    ) {        
+    ) {
         guard interface.state.canGoLive else {
             return
         }
@@ -228,7 +228,11 @@ class RealEngine {
             let shout = Shout()
             self.shout = shout
             
-            let error = shout.connectTo(radio)
+            let error = shout.connectTo(
+                radio,
+                description: event.name
+            )
+            
             sendPackets = error == nil
             
             DispatchQueue.main.async {

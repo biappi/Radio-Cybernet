@@ -21,7 +21,7 @@ class Shout {
         shout = shout_new()
     }
     
-    func connectTo(_ configuration: RadioConfiguration) -> String? {
+    func connectTo(_ configuration: RadioConfiguration, description: String) -> String? {
         shout_set_format(shout, UInt32(SHOUT_FORMAT_MP3))
         shout_set_protocol(shout, UInt32(SHOUT_PROTOCOL_HTTP))
         
@@ -39,6 +39,14 @@ class Shout {
             shout_set_mount(shout, $0)
         }
         
+        _ = configuration.name.withCString {
+            shout_set_name(shout, $0)
+        }
+
+        _ = description.withCString {
+            shout_set_description(shout, $0)
+        }
+
         let ret = shout_open(shout)
         
         if ret != SHOUTERR_SUCCESS {
