@@ -62,6 +62,15 @@ struct SwiftUIView: View {
     )
     
     @State var meterMaxWidthValue: CGFloat? = nil
+
+    enum PrefsMaxWidth: Preference {}
+    let prefsMaxWidth = GeometryPreferenceReader(
+        key: AppendValue<PrefsMaxWidth>.self,
+        value: { [$0.size.width] }
+    )
+    
+    @State var prefsMaxWidthValue: CGFloat? = nil
+
     
     func loadConfiguration() {
         let d = UserDefaults.standard
@@ -104,6 +113,10 @@ struct SwiftUIView: View {
                         HStack {
                             Text("Name")
                                 .padding(.bottom, 2)
+                                .read(prefsMaxWidth)
+                                .frame(width: prefsMaxWidthValue, alignment: .topLeading)
+
+
                             
                             Spacer()
                             TextField("Example Radio", text: $radioConf.name)
@@ -112,7 +125,9 @@ struct SwiftUIView: View {
                         HStack {
                             Text("Hostname")
                                 .padding(.bottom, 2)
-                            
+                                .read(prefsMaxWidth)
+                                .frame(width: prefsMaxWidthValue, alignment: .topLeading)
+
                             Spacer()
                             TextField("radio.example.com", text: $radioConf.hostname)
                                 .autocapitalization(.none)
@@ -131,7 +146,9 @@ struct SwiftUIView: View {
                         HStack {
                             Text("Mountpoint")
                                 .padding(.bottom, 2)
-                            
+                                .read(prefsMaxWidth)
+                                .frame(width: prefsMaxWidthValue, alignment: .topLeading)
+
                             Spacer()
                             TextField("/radio.mp3", text: $radioConf.mount)
                                 .autocapitalization(.none)
@@ -140,11 +157,13 @@ struct SwiftUIView: View {
                         HStack {
                             Text("Password")
                                 .padding(.bottom, 2)
+                                .read(prefsMaxWidth)
+                                .frame(width: prefsMaxWidthValue, alignment: .topLeading)
 
                             Spacer()
                             SecureField("password", text: $radioConf.password)
                         }
-
+                        
                     }
                     
                     Section(header: Text("Event")) {
@@ -167,7 +186,8 @@ struct SwiftUIView: View {
                     }
                 }
             }
-            
+            .assignMaxPreference(for: prefsMaxWidth.key, to: $prefsMaxWidthValue)
+
             VStack(alignment: .leading) {
                 HStack {
                     Text("Network")
@@ -196,6 +216,7 @@ struct SwiftUIView: View {
                 .background(Color.white)
                 .clipped()
                 .shadow(color: .gray, radius: 1, x: 0, y: -3)
+                .assignMaxPreference(for: meterMaxWidth.key, to: $meterMaxWidthValue)
                                 
         }
 
@@ -205,7 +226,6 @@ struct SwiftUIView: View {
                 self.saveConfiguraion()
             }
         }
-        .assignMaxPreference(for: meterMaxWidth.key, to: $meterMaxWidthValue)
     }
     
     func goLive() {
