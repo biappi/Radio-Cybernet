@@ -102,73 +102,76 @@ struct SwiftUIView: View {
         d.set(eventConf.name,     forKey: "eventName")
         d.set(eventConf.record,   forKey: "record")
     }
+
+    @State var settingsCollapsed = false
+    @State var eventCollapsed = false
     
     var body: some View {
 
         VStack(spacing: 0) {
             HStack {
                 Form {
-                    Section(header: Text("Radio Settings")) {
+                    Section(header: Header("Radio Settings", toggle: $settingsCollapsed)) {
 
-                        HStack {
-                            Text("Name")
-                                .padding(.bottom, 2)
-                                .read(prefsMaxWidth)
-                                .frame(width: prefsMaxWidthValue, alignment: .topLeading)
-
-
+                        if !settingsCollapsed {
+                            HStack {
+                                Text("Name")
+                                    .padding(.bottom, 2)
+                                    .read(prefsMaxWidth)
+                                    .frame(width: prefsMaxWidthValue, alignment: .topLeading)
+                                
+                                Spacer()
+                                TextField("Example Radio", text: $radioConf.name)
+                            }
                             
-                            Spacer()
-                            TextField("Example Radio", text: $radioConf.name)
-                        }
-
-                        HStack {
-                            Text("Hostname")
-                                .padding(.bottom, 2)
-                                .read(prefsMaxWidth)
-                                .frame(width: prefsMaxWidthValue, alignment: .topLeading)
-
-                            Spacer()
-                            TextField("radio.example.com", text: $radioConf.hostname)
-                                .autocapitalization(.none)
-                                .keyboardType(.URL)
+                            HStack {
+                                Text("Hostname")
+                                    .padding(.bottom, 2)
+                                    .read(prefsMaxWidth)
+                                    .frame(width: prefsMaxWidthValue, alignment: .topLeading)
+                                
+                                Spacer()
+                                TextField("radio.example.com", text: $radioConf.hostname)
+                                    .autocapitalization(.none)
+                                    .keyboardType(.URL)
+                                
+                                Text(":")
+                                    .padding(.bottom, 2)
+                                
+                                TextField("8080", text: $radioConf.portString)
+                                    .keyboardType(.numberPad)
+                                    .frame(maxWidth: 50)
+                                
+                            }
                             
-                            Text(":")
-                                .padding(.bottom, 2)
+                            HStack {
+                                Text("Mountpoint")
+                                    .padding(.bottom, 2)
+                                    .read(prefsMaxWidth)
+                                    .frame(width: prefsMaxWidthValue, alignment: .topLeading)
+                                
+                                Spacer()
+                                TextField("/radio.mp3", text: $radioConf.mount)
+                                    .autocapitalization(.none)
+                            }
                             
-                            TextField("8080", text: $radioConf.portString
-                            )
-                                .keyboardType(.numberPad)
-                                .frame(maxWidth: 50)
-                            
+                            HStack {
+                                Text("Password")
+                                    .padding(.bottom, 2)
+                                    .read(prefsMaxWidth)
+                                    .frame(width: prefsMaxWidthValue, alignment: .topLeading)
+                                
+                                Spacer()
+                                SecureField("password", text: $radioConf.password)
+                            }
                         }
-
-                        HStack {
-                            Text("Mountpoint")
-                                .padding(.bottom, 2)
-                                .read(prefsMaxWidth)
-                                .frame(width: prefsMaxWidthValue, alignment: .topLeading)
-
-                            Spacer()
-                            TextField("/radio.mp3", text: $radioConf.mount)
-                                .autocapitalization(.none)
-                        }
-
-                        HStack {
-                            Text("Password")
-                                .padding(.bottom, 2)
-                                .read(prefsMaxWidth)
-                                .frame(width: prefsMaxWidthValue, alignment: .topLeading)
-
-                            Spacer()
-                            SecureField("password", text: $radioConf.password)
-                        }
-                        
                     }
                     
-                    Section(header: Text("Event")) {
-                        TextField("Event name", text: $eventConf.name)
-                        Toggle("Save recording", isOn: $eventConf.record)
+                    Section(header: Header("Event", toggle: $eventCollapsed)) {
+                        if !eventCollapsed {
+                            TextField("Event name", text: $eventConf.name)
+                            Toggle("Save recording", isOn: $eventConf.record)
+                        }
                     }
                     
                     Section {
@@ -187,7 +190,7 @@ struct SwiftUIView: View {
                 }
             }
             .assignMaxPreference(for: prefsMaxWidth.key, to: $prefsMaxWidthValue)
-
+            
             VStack(alignment: .leading) {
                 HStack {
                     Text("Network")
@@ -230,6 +233,29 @@ struct SwiftUIView: View {
     
     func goLive() {
         engine.goLive(radio: radioConf, event: eventConf)
+    }
+    
+}
+
+struct Header: View {
+    
+    @Binding var toggle: Bool
+    
+    let text: String
+    
+    init(_ text: String, toggle: Binding<Bool>) {
+        self.text = text
+        self._toggle = toggle
+    }
+    
+    var body: some View {
+        HStack {
+            Text(toggle ? "▼" : "▲" )
+            Text(text)
+        }
+        .onTapGesture {
+            self.toggle.toggle()
+        }
     }
     
 }
