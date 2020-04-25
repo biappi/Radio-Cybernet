@@ -46,6 +46,12 @@ extension EngineState {
     
 }
 
+extension Bitrate {
+    var string: String {
+        return "\(rawValue) kbps"
+    }
+}
+
 struct SwiftUIView: View {
     
     @EnvironmentObject var engine: EngineInterface
@@ -55,14 +61,6 @@ struct SwiftUIView: View {
     @State private var radioConf  = RadioConfiguration()
     @State private var eventConf  = EventConfiguration()
     
-    enum MeterMaxWidthPreference: Preference {}
-    let meterMaxWidth = GeometryPreferenceReader(
-        key: AppendValue<MeterMaxWidthPreference>.self,
-        value: { [$0.size.width] }
-    )
-    
-    @State var meterMaxWidthValue: CGFloat? = nil
-
     enum PrefsMaxWidth: Preference {}
     let prefsMaxWidth = GeometryPreferenceReader(
         key: AppendValue<PrefsMaxWidth>.self,
@@ -71,7 +69,6 @@ struct SwiftUIView: View {
     
     @State var prefsMaxWidthValue: CGFloat? = nil
 
-    
     func loadConfiguration() {
         let d = UserDefaults.standard
         
@@ -105,10 +102,11 @@ struct SwiftUIView: View {
 
     @State var settingsCollapsed = false
     @State var eventCollapsed = false
-    
+        
     var body: some View {
 
         VStack(spacing: 0) {
+            NavigationView {
             HStack {
                 Form {
                     Section(header: Header("Radio Settings", toggle: $settingsCollapsed)) {
@@ -164,8 +162,19 @@ struct SwiftUIView: View {
                                 Spacer()
                                 SecureField("password", text: $radioConf.password)
                             }
+                            
+                            
+                            Picker(selection: $radioConf.bitrate, label: Text("Bitrate")) {
+                                    ForEach(Bitrate.allCases, id: \.self) {
+                                        Text($0.string)
+                                    }
+                                    .navigationBarTitle(Text("Encoding bitrate"))
+                                }
+                                
                         }
+
                     }
+                        .navigationBarTitle(Text("Stream!"))
                     
                     Section(header: Header("Event", toggle: $eventCollapsed)) {
                         if !eventCollapsed {
@@ -188,39 +197,13 @@ struct SwiftUIView: View {
                         }
                     }
                 }
+                .navigationBarTitle("Stream!")
+
             }
             .assignMaxPreference(for: prefsMaxWidth.key, to: $prefsMaxWidthValue)
-            
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("Network")
-                        .multilineTextAlignment(.leading)
-                        .read(meterMaxWidth)
-                        .frame(width: meterMaxWidthValue, alignment: .topLeading)
-
-                    Text(engine.state.string)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-
-                }
-                
-                HStack {
-                    Text("Input")
-                        .multilineTextAlignment(.leading)
-                        .read(meterMaxWidth)
-                        .frame(width: meterMaxWidthValue, alignment: .topLeading)
-                        
-
-                    Meter(level: engine.meterLevel)
-                        .frame(maxWidth: .infinity)
-                }
             }
-                .padding([.horizontal, .vertical])
-                .background(Color.white)
-                .clipped()
-                .shadow(color: .gray, radius: 1, x: 0, y: -3)
-                .assignMaxPreference(for: meterMaxWidth.key, to: $meterMaxWidthValue)
-                                
+            
+            InfoPaneView()
         }
 
         .onAppear(perform: loadConfiguration)
@@ -278,6 +261,52 @@ struct Meter: View {
     }
 }
 
+struct InfoPaneView: View {
+    
+    @EnvironmentObject var engine: EngineInterface
+
+    enum MeterMaxWidthPreference: Preference {}
+    let meterMaxWidth = GeometryPreferenceReader(
+        key: AppendValue<MeterMaxWidthPreference>.self,
+        value: { [$0.size.width] }
+    )
+    
+    @State var meterMaxWidthValue: CGFloat? = nil
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text("Network")
+                    .multilineTextAlignment(.leading)
+                    .read(meterMaxWidth)
+                    .frame(width: meterMaxWidthValue, alignment: .topLeading)
+                
+                Text(engine.state.string)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                
+            }
+            
+            HStack {
+                Text("Input")
+                    .multilineTextAlignment(.leading)
+                    .read(meterMaxWidth)
+                    .frame(width: meterMaxWidthValue, alignment: .topLeading)
+                
+                
+                Meter(level: engine.meterLevel)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .padding([.horizontal, .vertical])
+        .background(Color.white)
+        .clipped()
+        .shadow(color: .gray, radius: 1, x: 0, y: -3)
+        .assignMaxPreference(for: meterMaxWidth.key, to: $meterMaxWidthValue)
+    }
+    
+}
+
 // Preview Providers
 
 struct SwiftUIView_Previews: PreviewProvider {
@@ -301,3 +330,4 @@ struct SwiftUIView_Previews: PreviewProvider {
     }
     
 }
+

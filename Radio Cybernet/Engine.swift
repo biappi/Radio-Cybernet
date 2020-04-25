@@ -45,11 +45,12 @@ func sampleFromAudioBuffer(_ pointer: UnsafeMutableRawPointer, bufferStride: Int
 }
 
 struct RadioConfiguration {
-    var name:     String = ""
-    var hostname: String = ""
-    var port:     Int    = 80
-    var mount:    String = ""
-    var password: String = ""
+    var name:     String  = ""
+    var hostname: String  = ""
+    var port:     Int     = 80
+    var mount:    String  = ""
+    var password: String  = ""
+    var bitrate:  Bitrate = .bitrate128
 }
 
 struct EventConfiguration {
@@ -107,8 +108,9 @@ class RealEngine {
     static let mp3BufferSizeSample    = Int(1.25 * Double(audioBufferSizeSamples) + 7200)
     
     let engine = AVAudioEngine()
-    let lame   = LAME()
-    let shout  = Shout()
+    
+    var lame: LAME?
+    var shout: Shout?
     
     var floatData1 = [Float](repeating: 0, count: audioBufferSizeSamples)
     var mp3Buffer  = [UInt8](repeating: 0, count: mp3BufferSizeSample)
@@ -117,6 +119,8 @@ class RealEngine {
     
     init(interface: EngineInterface) {
         self.interface = interface
+        lame = nil
+        shout = nil
         interface.engine = self
     }
     
@@ -166,10 +170,12 @@ class RealEngine {
     func goLive(
         radio: RadioConfiguration,
         event: EventConfiguration
-    ) {
+    ) {        
         guard interface.state.canGoLive else {
             return
         }
+        
+        lame = LAME(bitrate: radio.bitrate)
         
         semaphore.wait()
         defer { semaphore.signal() }
@@ -219,6 +225,9 @@ class RealEngine {
                 file = nil
             }
 
+            let shout = Shout()
+            self.shout = shout
+            
             let error = shout.connectTo(radio)
             sendPackets = error == nil
             
@@ -234,13 +243,16 @@ class RealEngine {
         else if disconnectRequest {
             disconnectRequest = false
             sendPackets = false
-            shout.disconnect()
+            shout?.disconnect()
+            shout = nil
+            
             DispatchQueue.main.async {
+                self.lame = nil
                 self.interface.state = .offline(status: nil)
             }
         }
         
-        if sendPackets {
+        if sendPackets, let lame = self.lame {
             let encoded = lame_encode_buffer_ieee_float(
                 lame.lame,
                 floatData1,
@@ -253,13 +265,20 @@ class RealEngine {
             let mp3buf = mp3Buffer.prefix(upTo: Int(encoded))
 
             file?.write(Data(mp3buf))
-            
-            if let error = shout.send(mp3buf) {
-                sendPackets = false
-                DispatchQueue.main.async {
-                    self.interface.state = .offline(status: error)
+    
+            if let shout = self.shout {
+                if let error = shout.send(mp3buf) {
+                    sendPackets = false
+                    DispatchQueue.main.async {
+                        self.interface.state = .offline(status: error)
+                    }
                 }
             }
+            else {
+                print("shout non there when it should have")
+                //                    sendPackets = false
+            }
+            
         }
         
         let scaledValue = meterValue(data: floatData1)

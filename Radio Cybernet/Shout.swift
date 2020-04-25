@@ -9,7 +9,7 @@
 import Foundation
 
 class Shout {
-    let shout : OpaquePointer?
+    fileprivate let shout : OpaquePointer?
     
     struct ShoutError : Error {
         var errno:       Int
@@ -43,12 +43,15 @@ class Shout {
         
         if ret != SHOUTERR_SUCCESS {
             let error = String(cString: shout_get_error(shout))
-            shout_close(shout)
             return error
         }
         else {
             return nil
         }
+    }
+    
+    deinit {
+        shout_free(shout)
     }
     
     func disconnect() {
@@ -63,7 +66,6 @@ class Shout {
         
         if ret != SHOUTERR_SUCCESS {
             let error = String(cString: shout_get_error(shout))
-            shout_close(shout)
             return error
         }
         else {
