@@ -25,7 +25,7 @@ extension RadioConfiguration {
     
 }
 
-extension Engine.State {
+extension EngineState {
     
     var string: String {
         switch self {
@@ -48,7 +48,7 @@ extension Engine.State {
 
 struct SwiftUIView: View {
     
-    @EnvironmentObject var engine: Engine
+    @EnvironmentObject var engine: RealEngine
 
     @State private var level      = CGFloat(0)
     

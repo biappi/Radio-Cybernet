@@ -57,13 +57,36 @@ struct EventConfiguration {
     var record: Bool = true
 }
 
-class Engine : ObservableObject {
+enum EngineState {
+    case offline(status: String?)
+    case connecting
+    case connected
+    case disconnecting
+    
+    var canGoLive: Bool {
+        switch self {
+        case .offline(_):    return true
+        case .connecting:    return false
+        case .connected:     return false
+        case .disconnecting: return false
+        }
+    }
+    
+    var canDisconnect: Bool {
+        switch self {
+            case .offline(_):    return false
+            case .connecting:    return false
+            case .connected:     return true
+            case .disconnecting: return false
+        }
+    }
+}
+
+class RealEngine : ObservableObject {
     
     static let audioBufferSizeSec     = 1
     static let audioBufferSizeSamples = 44100 * audioBufferSizeSec
     static let mp3BufferSizeSample    = Int(1.25 * Double(audioBufferSizeSamples) + 7200)
-    
-    static let shared = Engine()
     
     let engine = AVAudioEngine()
     let lame   = LAME()
@@ -73,33 +96,7 @@ class Engine : ObservableObject {
     var mp3Buffer  = [UInt8](repeating: 0, count: mp3BufferSizeSample)
 
     @Published private(set) var meterLevel = CGFloat(0)
-    
-    enum State {
-        case offline(status: String?)
-        case connecting
-        case connected
-        case disconnecting
-        
-        var canGoLive: Bool {
-            switch self {
-            case .offline(_):    return true
-            case .connecting:    return false
-            case .connected:     return false
-            case .disconnecting: return false
-            }
-        }
-        
-        var canDisconnect: Bool {
-            switch self {
-                case .offline(_):    return false
-                case .connecting:    return false
-                case .connected:     return true
-                case .disconnecting: return false
-            }
-        }
-    }
-    
-    @Published private(set) var state = State.offline(status: nil)
+    @Published private(set) var state = EngineState.offline(status: nil)
     
     func recordedFileURL(name: String) -> URL {
         let formatter = DateFormatter()
@@ -228,7 +225,7 @@ class Engine : ObservableObject {
                 floatData1,
                 Int32(length),
                 &mp3Buffer,
-                Int32(Engine.mp3BufferSizeSample)
+                Int32(RealEngine.mp3BufferSizeSample)
             )
             
             let mp3buf = mp3Buffer.prefix(upTo: Int(encoded))
