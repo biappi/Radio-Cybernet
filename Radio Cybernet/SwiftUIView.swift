@@ -174,6 +174,7 @@ struct SwiftUIView: View {
                         }
 
                     }
+                        .disabled(engine.state.canDisconnect)
                         .navigationBarTitle(Text("Stream!"))
                     
                     Section(header: Header("Event", toggle: $eventCollapsed)) {
@@ -182,13 +183,14 @@ struct SwiftUIView: View {
                             Toggle("Save recording", isOn: $eventConf.record)
                         }
                     }
+                        .disabled(engine.state.canDisconnect)
+
                     
                     Section {
                         if !engine.state.canDisconnect {
                             Button(action: goLive) {
                                 Text("Go Live")
                             }
-                            .disabled(!engine.state.canGoLive)
                         }
                         else {
                             Button(action: engine.disconnect) {
@@ -196,6 +198,8 @@ struct SwiftUIView: View {
                             }
                         }
                     }
+                    .listRowBackground(engine.state.canDisconnect ? Color.red : nil)
+                    .foregroundColor(engine.state.canDisconnect ? Color.white : nil)
                 }
                 .navigationBarTitle("Stream!")
 
