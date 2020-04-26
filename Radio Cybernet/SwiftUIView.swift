@@ -76,7 +76,6 @@ struct SwiftUIView: View {
 
         ZStack(alignment: .bottom) {
             NavigationView {
-            HStack {
                 Form {
                     Section(header: Header("Radio Settings", toggle: $settingsCollapsed)) {
 
@@ -134,11 +133,11 @@ struct SwiftUIView: View {
                             
                             
                             Picker(selection: $radioConf.bitrate, label: Text("Bitrate")) {
-                                    ForEach(Bitrate.allCases, id: \.self) {
-                                        Text($0.string)
-                                    }
-                                    .navigationBarTitle(Text("Encoding bitrate"))
+                                ForEach(Bitrate.allCases, id: \.self) {
+                                    Text($0.string)
                                 }
+                                .navigationBarTitle(Text("Encoding bitrate"))
+                            }
                                 
                         }
 
@@ -153,6 +152,7 @@ struct SwiftUIView: View {
                         }
                     }
                         .disabled(engine.state.canDisconnect)
+                        .navigationBarTitle(Text("Stream!"))
 
                     
                     Section {
@@ -170,9 +170,8 @@ struct SwiftUIView: View {
                     .listRowBackground(engine.state.canDisconnect ? Color.red : nil)
                     .foregroundColor(engine.state.canDisconnect ? Color.white : nil)
                 }
-                .navigationBarTitle("Stream!")
 
-            }
+            .navigationBarTitle("Stream!")
             .assignMaxPreference(for: prefsMaxWidth.key, to: $prefsMaxWidthValue)
             }
             
