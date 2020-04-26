@@ -82,7 +82,10 @@ struct SwiftUIView: View {
         radioConf.port     = d.integer(forKey: "port")
         radioConf.mount    = d.string (forKey: "mount")     ?? ""
         radioConf.password = d.string (forKey: "password")  ?? ""
-        
+        radioConf.bitrate  = d.object (forKey: "bitrate")
+                                .flatMap { ($0 as? NSNumber)?.intValue }
+                                .flatMap(Bitrate.init)
+                                ?? .bitrate128
         eventConf.name     = d.string (forKey: "eventName") ?? ""
         eventConf.record   = d.bool   (forKey: "record")
     }
@@ -95,7 +98,8 @@ struct SwiftUIView: View {
         d.set(radioConf.port,     forKey: "port")
         d.set(radioConf.mount,    forKey: "mount")
         d.set(radioConf.password, forKey: "password")
-        
+        d.set(radioConf.bitrate.rawValue,
+                                  forKey: "bitrate")
         d.set(eventConf.name,     forKey: "eventName")
         d.set(eventConf.record,   forKey: "record")
     }
