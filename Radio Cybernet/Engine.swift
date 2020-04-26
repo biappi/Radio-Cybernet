@@ -44,20 +44,6 @@ func sampleFromAudioBuffer(_ pointer: UnsafeMutableRawPointer, bufferStride: Int
         .pointee
 }
 
-struct RadioConfiguration {
-    var name:     String  = ""
-    var hostname: String  = ""
-    var port:     Int     = 80
-    var mount:    String  = ""
-    var password: String  = ""
-    var bitrate:  Bitrate = .bitrate128
-}
-
-struct EventConfiguration {
-    var name:   String = ""
-    var record: Bool = true
-}
-
 enum EngineState {
     case offline(status: String?)
     case connecting

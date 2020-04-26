@@ -15,6 +15,7 @@
 		3F216B4E23726109003756D0 /* LAME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F216B4D23726109003756D0 /* LAME.swift */; };
 		3F216B502372612A003756D0 /* Shout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F216B4F2372612A003756D0 /* Shout.swift */; };
 		3F216B5223726170003756D0 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F216B5123726170003756D0 /* Engine.swift */; };
+		3F6229FD24550F0B004F11B9 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6229FC24550F0B004F11B9 /* Configuration.swift */; };
 		3FA92AB52354002D0038AFFC /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA92AB42354002D0038AFFC /* SwiftUIView.swift */; };
 		3FA92ACF23540F2B0038AFFC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA92ACE23540F2B0038AFFC /* SceneDelegate.swift */; };
 		3FF2722F231D843E007F53D3 /* libLAME.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF27227231D8427007F53D3 /* libLAME.a */; };
@@ -50,6 +51,7 @@
 		3F216B4D23726109003756D0 /* LAME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAME.swift; sourceTree = "<group>"; };
 		3F216B4F2372612A003756D0 /* Shout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shout.swift; sourceTree = "<group>"; };
 		3F216B5123726170003756D0 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		3F6229FC24550F0B004F11B9 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		3FA92AB42354002D0038AFFC /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		3FA92ACE23540F2B0038AFFC /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		3FF27222231D8427007F53D3 /* LAME.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LAME.xcodeproj; path = Dependencies/LAME.xcodeproj; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				3F216B4F2372612A003756D0 /* Shout.swift */,
 				3F216B5123726170003756D0 /* Engine.swift */,
 				3F158C1424548B7700D0C93B /* SameWidthHack.swift */,
+				3F6229FC24550F0B004F11B9 /* Configuration.swift */,
 			);
 			path = "Radio Cybernet";
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 				3F216B4E23726109003756D0 /* LAME.swift in Sources */,
 				3F158C1524548B7700D0C93B /* SameWidthHack.swift in Sources */,
 				3FF2724F231DA685007F53D3 /* stub.c in Sources */,
+				3F6229FD24550F0B004F11B9 /* Configuration.swift in Sources */,
 				3F216B5223726170003756D0 /* Engine.swift in Sources */,
 				3FA92AB52354002D0038AFFC /* SwiftUIView.swift in Sources */,
 				3F1B7322231D839800D83CA0 /* AppDelegate.swift in Sources */,

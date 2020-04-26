@@ -69,79 +69,6 @@ struct SwiftUIView: View {
     
     @State var prefsMaxWidthValue: CGFloat? = nil
 
-    func loadConfiguration() {
-        let d = UserDefaults.standard
-        
-        d.register(defaults: [
-            "port": 8000,
-            "record": false
-        ])
-        
-        radioConf.name     = d.string (forKey: "radioName") ?? ""
-        radioConf.hostname = d.string (forKey: "hostname")  ?? ""
-        radioConf.port     = d.integer(forKey: "port")
-        radioConf.mount    = d.string (forKey: "mount")     ?? ""
-        radioConf.bitrate  = d.object (forKey: "bitrate")
-                                .flatMap { ($0 as? NSNumber)?.intValue }
-                                .flatMap(Bitrate.init)
-                                ?? .bitrate128
-        eventConf.name     = d.string (forKey: "eventName") ?? ""
-        eventConf.record   = d.bool   (forKey: "record")
-        
-        let query: [String: Any] = [
-            kSecClass            as String: kSecClassInternetPassword,
-            kSecAttrServer       as String: "\(radioConf.hostname):\(radioConf.port)",
-            kSecReturnAttributes as String: true,
-            kSecMatchLimit       as String: kSecMatchLimitOne,
-            kSecReturnData       as String: true,
-        ]
-        
-        var item : CFTypeRef?
-        if
-            SecItemCopyMatching(query as CFDictionary, &item) == noErr,
-            let existingItem = item as? [String : Any],
-            let passwordData = existingItem[kSecValueData as String] as? Data,
-            let password = String(data: passwordData, encoding: String.Encoding.utf8)
-        {
-            radioConf.password = password
-        }
-    }
-    
-    func saveConfiguraion() {
-        let d = UserDefaults.standard
-        
-        d.set(radioConf.name,     forKey: "radioName")
-        d.set(radioConf.hostname, forKey: "hostname")
-        d.set(radioConf.port,     forKey: "port")
-        d.set(radioConf.mount,    forKey: "mount")
-        d.set(radioConf.bitrate.rawValue,
-                                  forKey: "bitrate")
-        d.set(eventConf.name,     forKey: "eventName")
-        d.set(eventConf.record,   forKey: "record")
-        
-        let query: [String: Any] = [
-            kSecClass      as String: kSecClassInternetPassword,
-            kSecAttrServer as String: "\(radioConf.hostname):\(radioConf.port)",
-        ]
-        
-        let attributes: [String: Any] = [
-            kSecValueData  as String: radioConf.password.data(using: .utf8)!,
-        ]
-        
-        let s = SecItemAdd(query as CFDictionary, nil)
-        
-        if s == errSecDuplicateItem {
-            let s = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-            if s != noErr {
-                print("error updating pass \(s)")
-            }
-        }
-        else {
-            print("error saving pass \(s)")
-        }
-        
-    }
-
     @State var settingsCollapsed = false
     @State var eventCollapsed = false
         
@@ -252,10 +179,18 @@ struct SwiftUIView: View {
             InfoPaneView()
         }
 
-        .onAppear(perform: loadConfiguration)
+        .onAppear {
+            (
+                self.radioConf,
+                self.eventConf
+            ) = LoadConfiguration()
+        }
         .onReceive(engine.$state) {
             if $0.didConnect {
-                self.saveConfiguraion()
+                SaveConfiguraion(
+                    radioConf: self.radioConf,
+                    eventConf: self.eventConf
+                )
             }
         }
     }
