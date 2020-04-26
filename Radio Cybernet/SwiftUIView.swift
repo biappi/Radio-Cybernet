@@ -74,7 +74,7 @@ struct SwiftUIView: View {
         
     var body: some View {
 
-        VStack(spacing: 0) {
+        ZStack(alignment: .bottom) {
             NavigationView {
             HStack {
                 Form {
@@ -177,6 +177,10 @@ struct SwiftUIView: View {
             }
             
             InfoPaneView()
+                .background(
+                    Color(UIColor.systemBackground)
+                        .edgesIgnoringSafeArea(.bottom)
+                )
         }
 
         .onAppear {
@@ -265,7 +269,6 @@ struct InfoPaneView: View {
                 Text(engine.state.string)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
-                
             }
             
             HStack {
@@ -280,9 +283,9 @@ struct InfoPaneView: View {
             }
         }
         .padding([.horizontal, .vertical])
-        .background(Color.white)
+        .background(Color(UIColor.systemBackground))
         .clipped()
-        .shadow(color: .gray, radius: 1, x: 0, y: -3)
+        .shadow(color: Color(UIColor.placeholderText), radius: 1, x: 0, y: -3)
         .assignMaxPreference(for: meterMaxWidth.key, to: $meterMaxWidthValue)
     }
     
@@ -306,7 +309,7 @@ struct SwiftUIView_Previews: PreviewProvider {
                 .environmentObject(interface)
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
                 .previewDisplayName("iPhone 11 Pro Max")
-            
+                .environment(\.colorScheme, .dark)
         }
     }
     
