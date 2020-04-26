@@ -11,9 +11,13 @@ import AVFoundation
 import Combine
 
 func rms(data: [Float]) -> Float {
-    return data
-        .reduce(0) { (a, i) in a + powf(i, 2) }
-        / Float(data.count)
+    var s = Float.zero
+    
+    for d in data {
+        s += pow(d, 2)
+    }
+    
+    return s / Float(data.count)
 }
 
 func scalePower(_ power: Float, minDb: Float = -120) -> Float {
