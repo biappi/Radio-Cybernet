@@ -120,7 +120,17 @@ struct SwiftUIView: View {
                                 TextField("/radio.mp3", text: $radioConf.mount)
                                     .autocapitalization(.none)
                             }
-                            
+
+                            HStack {
+                                Text("Username")
+                                    .padding(.bottom, 2)
+                                    .read(prefsMaxWidth)
+                                    .frame(width: prefsMaxWidthValue, alignment: .topLeading)
+                                
+                                Spacer()
+                                TextField("", text: $radioConf.user)
+                            }
+
                             HStack {
                                 Text("Password")
                                     .padding(.bottom, 2)
@@ -128,7 +138,7 @@ struct SwiftUIView: View {
                                     .frame(width: prefsMaxWidthValue, alignment: .topLeading)
                                 
                                 Spacer()
-                                SecureField("password", text: $radioConf.password)
+                                SecureField("", text: $radioConf.password)
                             }
                             
                             

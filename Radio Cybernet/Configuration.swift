@@ -13,6 +13,7 @@ struct RadioConfiguration {
     var hostname: String  = ""
     var port:     Int     = 80
     var mount:    String  = ""
+    var user:     String  = ""
     var password: String  = ""
     var bitrate:  Bitrate = .bitrate128
 }
@@ -36,6 +37,7 @@ func LoadConfiguration() -> (RadioConfiguration, EventConfiguration) {
     radioConf.hostname = d.string (forKey: "hostname")  ?? ""
     radioConf.port     = d.integer(forKey: "port")
     radioConf.mount    = d.string (forKey: "mount")     ?? ""
+    radioConf.user     = d.string (forKey: "user")      ?? ""
     radioConf.bitrate  = d.object (forKey: "bitrate")
                             .flatMap { ($0 as? NSNumber)?.intValue }
                             .flatMap(Bitrate.init)
@@ -46,6 +48,7 @@ func LoadConfiguration() -> (RadioConfiguration, EventConfiguration) {
     let query: [String: Any] = [
         kSecClass            as String: kSecClassInternetPassword,
         kSecAttrServer       as String: "\(radioConf.hostname):\(radioConf.port)",
+        kSecAttrAccount      as String: radioConf.user,
         kSecReturnAttributes as String: true,
         kSecMatchLimit       as String: kSecMatchLimitOne,
         kSecReturnData       as String: true,
@@ -71,14 +74,16 @@ func SaveConfiguraion(radioConf: RadioConfiguration, eventConf: EventConfigurati
     d.set(radioConf.hostname, forKey: "hostname")
     d.set(radioConf.port,     forKey: "port")
     d.set(radioConf.mount,    forKey: "mount")
+    d.set(radioConf.user,     forKey: "user")
     d.set(radioConf.bitrate.rawValue,
                               forKey: "bitrate")
     d.set(eventConf.name,     forKey: "eventName")
     d.set(eventConf.record,   forKey: "record")
     
     let query: [String: Any] = [
-        kSecClass      as String: kSecClassInternetPassword,
-        kSecAttrServer as String: "\(radioConf.hostname):\(radioConf.port)",
+        kSecClass       as String: kSecClassInternetPassword,
+        kSecAttrServer  as String: "\(radioConf.hostname):\(radioConf.port)",
+        kSecAttrAccount as String: radioConf.user
     ]
     
     let attributes: [String: Any] = [

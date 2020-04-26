@@ -30,7 +30,13 @@ class Shout {
         _ = configuration.hostname.withCString {
             shout_set_host(shout, $0)
         }
-        
+
+        if !configuration.user.isEmpty {
+            _ = configuration.user.withCString {
+                shout_set_user(shout, $0)
+            }
+        }
+
         _ = configuration.password.withCString {
             shout_set_password(shout, $0)
         }
